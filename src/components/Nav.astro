@@ -1,0 +1,220 @@
+---
+const enlaces = [
+  { href: '#catalogo', texto: 'Catálogo' },
+  { href: '#origen', texto: 'Origen' },
+  { href: '#pedidos', texto: 'Pedidos' },
+];
+---
+
+<header class="nav" id="nav">
+  <div class="nav__inner contenedor">
+    <a class="nav__marca" href="#top" aria-label="Altura, inicio">
+      <span class="nav__icono" aria-hidden="true">
+        <svg viewBox="0 0 24 24" focusable="false">
+          <path d="M12 2c4.5 0 8 3.7 8 8.4C20 17 16.4 22 12 22S4 17 4 10.4C4 5.7 7.5 2 12 2Z" fill="currentColor" />
+          <path d="M15.6 5.4C12.8 8.1 11.4 12.2 11 18.6" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+      </span>
+      <span class="nav__nombre">Altura</span>
+    </a>
+
+    <nav class="nav__links" aria-label="Navegación principal">
+      {enlaces.map((e) => <a href={e.href}>{e.texto}</a>)}
+    </nav>
+
+    <div class="nav__acciones">
+      <a class="btn btn--primario nav__cta" href="#pedidos">Pedir café</a>
+      <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-movil" aria-label="Abrir menú">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="nav__movil" id="nav-movil" hidden>
+    <nav aria-label="Navegación principal móvil">
+      {enlaces.map((e) => <a href={e.href}>{e.texto}</a>)}
+      <a class="btn btn--primario" href="#pedidos">Pedir café</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    transition: background var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
+    border-bottom: 1px solid transparent;
+  }
+
+  .nav.is-scrolled {
+    background: color-mix(in srgb, var(--crema) 88%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom-color: var(--borde);
+    box-shadow: 0 10px 30px -26px rgba(27, 19, 16, 0.7);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-4);
+    padding-block: 0.85rem;
+  }
+
+  .nav__marca {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--espresso);
+  }
+
+  .nav__icono {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: var(--espresso);
+    color: var(--caramelo);
+  }
+
+  .nav__icono svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .nav__nombre {
+    font-family: var(--fuente-titulo);
+    font-size: 1.32rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .nav__links {
+    display: flex;
+    align-items: center;
+    gap: clamp(1rem, 2.5vw, 2.25rem);
+  }
+
+  .nav__links a {
+    position: relative;
+    font-size: var(--t--1);
+    font-weight: 500;
+    color: var(--tinta);
+    padding-block: 0.25rem;
+  }
+
+  .nav__links a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1.5px;
+    background: var(--caramelo-600);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transicion);
+  }
+
+  .nav__links a:hover::after,
+  .nav__links a:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .nav__acciones {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .nav__toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    background: var(--blanco);
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .nav__toggle span {
+    display: block;
+    width: 18px;
+    height: 1.8px;
+    margin: 4px auto;
+    background: var(--espresso);
+    transition: transform var(--transicion), opacity var(--transicion);
+  }
+
+  .nav__toggle[aria-expanded='true'] span:first-child {
+    transform: translateY(2.9px) rotate(45deg);
+  }
+
+  .nav__toggle[aria-expanded='true'] span:last-child {
+    transform: translateY(-2.9px) rotate(-45deg);
+  }
+
+  .nav__movil {
+    border-top: 1px solid var(--borde);
+    background: var(--crema);
+  }
+
+  .nav__movil nav {
+    display: grid;
+    gap: 0.35rem;
+    width: min(100% - 2.5rem, var(--ancho));
+    margin-inline: auto;
+    padding-block: 1rem 1.5rem;
+  }
+
+  .nav__movil a:not(.btn) {
+    padding-block: 0.65rem;
+    font-size: var(--t-1);
+    font-weight: 500;
+    border-bottom: 1px solid var(--borde);
+  }
+
+  .nav__movil .btn {
+    margin-top: 0.75rem;
+    justify-self: start;
+  }
+
+  @media (max-width: 860px) {
+    .nav__links,
+    .nav__cta {
+      display: none;
+    }
+
+    .nav__toggle {
+      display: block;
+    }
+  }
+</style>
+
+<script is:inline>
+  const nav = document.getElementById('nav');
+  const toggle = nav.querySelector('.nav__toggle');
+  const panel = document.getElementById('nav-movil');
+
+  const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 12);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  toggle.addEventListener('click', () => {
+    const abierto = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!abierto));
+    toggle.setAttribute('aria-label', abierto ? 'Abrir menú' : 'Cerrar menú');
+    panel.hidden = abierto;
+  });
+
+  panel.addEventListener('click', (event) => {
+    if (event.target.closest('a')) {
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', 'Abrir menú');
+      panel.hidden = true;
+    }
+  });
+</script>

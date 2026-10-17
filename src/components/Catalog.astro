@@ -1,0 +1,240 @@
+---
+import { Image } from 'astro:assets';
+import espresso from '../assets/producto-espresso.jpg';
+import capuchino from '../assets/producto-capuchino.jpg';
+import latte from '../assets/producto-latte.jpg';
+import coldbrew from '../assets/producto-coldbrew.jpg';
+import filtrado from '../assets/producto-filtrado.jpg';
+import grano from '../assets/producto-grano.jpg';
+
+const ars = new Intl.NumberFormat('es-AR', {
+  style: 'currency',
+  currency: 'ARS',
+  maximumFractionDigits: 0,
+});
+
+const productos = [
+  {
+    nombre: 'Espresso Altura',
+    categoria: 'Barra caliente',
+    notas: ['cacao amargo', 'avellana'],
+    precio: 2800,
+    img: espresso,
+    alt: 'Espresso recién extraído servido sobre una tabla de madera',
+  },
+  {
+    nombre: 'Capuchino de la Casa',
+    categoria: 'Barra caliente',
+    notas: ['canela', 'panela'],
+    precio: 3400,
+    img: capuchino,
+    alt: 'Capuchino con arte latte en una taza amarilla sobre mesa de madera',
+  },
+  {
+    nombre: 'Latte Vainilla de Finca',
+    categoria: 'Barra caliente',
+    notas: ['vainilla', 'caramelo'],
+    precio: 3600,
+    img: latte,
+    alt: 'Latte con arte de corazón en un vaso de vidrio con cuchara y azúcar',
+  },
+  {
+    nombre: 'Cold Brew 18 h',
+    categoria: 'Barra fría',
+    notas: ['ciruela', 'azúcar morena'],
+    precio: 3900,
+    img: coldbrew,
+    alt: 'Vaso de cold brew frío con hielo sobre una bandeja rústica',
+  },
+  {
+    nombre: 'V60 de Microlote',
+    categoria: 'Filtrado',
+    notas: ['jazmín', 'durazno'],
+    precio: 4200,
+    img: filtrado,
+    alt: 'Cafetera Chemex de filtrado por vertido junto a un vaso de café',
+  },
+  {
+    nombre: 'Grano Altura · 250 g',
+    categoria: 'Para llevar',
+    notas: ['cacao', 'caramelo'],
+    precio: 8500,
+    img: grano,
+    alt: 'Bolsa abierta de café en grano tostado vista desde arriba',
+  },
+];
+---
+
+<section class="catalogo seccion" id="catalogo">
+  <div class="contenedor">
+    <div class="cabecera" data-reveal>
+      <p class="eyebrow">Catálogo</p>
+      <h2 class="titulo-seccion">Lo que sale de nuestra barra</h2>
+      <p class="entrada">
+        Una carta corta y cuidada. Cada bebida se prepara con el microlote de la semana, así
+        que las notas cambian con la cosecha.
+      </p>
+    </div>
+
+    <ul class="rejilla">
+      {
+        productos.map((p, i) => (
+          <li class="producto" data-reveal style={`--reveal-delay: ${i * 70}ms`}>
+            <div class="producto__media">
+              <Image
+                src={p.img}
+                alt={p.alt}
+                widths={[420, 620, 900]}
+                sizes="(max-width: 640px) 92vw, (max-width: 1080px) 46vw, 360px"
+                loading="lazy"
+                decoding="async"
+              />
+              <span class="producto__categoria">{p.categoria}</span>
+            </div>
+
+            <div class="producto__cuerpo">
+              <div class="producto__fila">
+                <h3 class="producto__nombre">{p.nombre}</h3>
+                <p class="producto__precio">{ars.format(p.precio)}</p>
+              </div>
+              <ul class="producto__notas">
+                {p.notas.map((n) => <li>{n}</li>)}
+              </ul>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="catalogo__nota" data-reveal>
+      ¿Buscás una suscripción mensual o café para tu oficina?
+      <a href="#pedidos">Armemos un pedido por encargo</a>.
+    </p>
+  </div>
+</section>
+
+<style>
+  .rejilla {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1.25rem, 2.5vw, 2rem);
+  }
+
+  .producto {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-g);
+    background: var(--blanco);
+    overflow: hidden;
+    transition: transform var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
+  }
+
+  .producto:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in srgb, var(--caramelo) 45%, var(--borde));
+    box-shadow: var(--sombra-alta);
+  }
+
+  .producto__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: var(--crema-2);
+  }
+
+  .producto__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 600ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  }
+
+  .producto:hover .producto__media img {
+    transform: scale(1.05);
+  }
+
+  .producto__categoria {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.75rem;
+    padding: 0.32rem 0.7rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--espresso) 82%, transparent);
+    color: var(--crema);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    backdrop-filter: blur(6px);
+  }
+
+  .producto__cuerpo {
+    display: grid;
+    gap: var(--e-3);
+    padding: var(--e-4);
+    flex: 1;
+    align-content: start;
+  }
+
+  .producto__fila {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--e-3);
+  }
+
+  .producto__nombre {
+    font-size: var(--t-1);
+    font-weight: 600;
+  }
+
+  .producto__precio {
+    font-family: var(--fuente-titulo);
+    font-size: var(--t-1);
+    font-weight: 600;
+    color: var(--caramelo-600);
+    white-space: nowrap;
+  }
+
+  .producto__notas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .producto__notas li {
+    padding: 0.22rem 0.6rem;
+    border: 1px solid var(--borde);
+    border-radius: 999px;
+    font-size: 0.76rem;
+    letter-spacing: 0.02em;
+    color: var(--tinta-2);
+  }
+
+  .catalogo__nota {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    font-size: var(--t-0);
+    color: var(--tinta-2);
+    text-align: center;
+  }
+
+  .catalogo__nota a {
+    color: var(--caramelo-600);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 1080px) {
+    .rejilla {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 640px) {
+    .rejilla {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

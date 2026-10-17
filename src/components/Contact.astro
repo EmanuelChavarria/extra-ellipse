@@ -1,0 +1,381 @@
+---
+const tipos = [
+  'Café en grano',
+  'Suscripción mensual',
+  'Evento u oficina',
+  'Consulta general',
+];
+
+const datos = [
+  { etiqueta: 'Barra', valor: 'Av. del Tostado 1420, Palermo' },
+  { etiqueta: 'Horarios', valor: 'Lun a Sáb · 8:00 – 20:00' },
+  { etiqueta: 'Email', valor: 'hola@altura.cafe', href: 'mailto:hola@altura.cafe' },
+  { etiqueta: 'WhatsApp', valor: '+54 11 5555 0123', href: 'tel:+541155550123' },
+];
+---
+
+<section class="pedidos seccion" id="pedidos">
+  <div class="contenedor pedidos__grid">
+    <div class="pedidos__info">
+      <div class="cabecera" data-reveal>
+        <p class="eyebrow">Pedidos y contacto</p>
+        <h2 class="titulo-seccion">Contanos qué necesitás</h2>
+        <p class="entrada">
+          Completá el formulario y te respondemos el mismo día con disponibilidad, molienda y
+          forma de entrega. También podés escribirnos directo.
+        </p>
+      </div>
+
+      <dl class="pedidos__datos" data-reveal>
+        {
+          datos.map((d) => (
+            <div>
+              <dt>{d.etiqueta}</dt>
+              <dd>
+                {d.href ? <a href={d.href}>{d.valor}</a> : d.valor}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <div class="pedidos__panel" data-reveal>
+      <form id="form-pedido" class="formulario" novalidate>
+        <div class="campo">
+          <label for="nombre">Nombre y apellido</label>
+          <input id="nombre" name="nombre" type="text" autocomplete="name" required aria-describedby="error-nombre" />
+          <p class="campo__error" id="error-nombre" hidden></p>
+        </div>
+
+        <div class="campo-doble">
+          <div class="campo">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" inputmode="email" autocomplete="email" required aria-describedby="error-email" />
+            <p class="campo__error" id="error-email" hidden></p>
+          </div>
+          <div class="campo">
+            <label for="telefono">Teléfono <span class="campo__opcional">(opcional)</span></label>
+            <input id="telefono" name="telefono" type="tel" inputmode="tel" autocomplete="tel" />
+          </div>
+        </div>
+
+        <div class="campo-doble">
+          <div class="campo">
+            <label for="tipo">Tipo de pedido</label>
+            <select id="tipo" name="tipo" required aria-describedby="error-tipo">
+              <option value="" selected disabled>Elegí una opción</option>
+              {tipos.map((t) => <option value={t}>{t}</option>)}
+            </select>
+            <p class="campo__error" id="error-tipo" hidden></p>
+          </div>
+          <div class="campo">
+            <label for="detalle">Cantidad o detalle <span class="campo__opcional">(opcional)</span></label>
+            <input id="detalle" name="detalle" type="text" placeholder="Ej.: 2 kg, molienda media" />
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="mensaje">Tu pedido</label>
+          <textarea id="mensaje" name="mensaje" rows="4" required aria-describedby="error-mensaje"></textarea>
+          <p class="campo__error" id="error-mensaje" hidden></p>
+        </div>
+
+        <button class="btn btn--primario formulario__enviar" type="submit">Enviar pedido</button>
+
+        <p class="formulario__nota">
+          Sitio de demostración: el formulario no está conectado a un servidor. Al enviar te
+          mostramos un resumen y un correo listo para mandar.
+        </p>
+      </form>
+
+      <div class="exito" id="exito" hidden role="status" aria-live="polite">
+        <p class="exito__icono" aria-hidden="true">
+          <svg viewBox="0 0 24 24" focusable="false"><path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+        </p>
+        <h3 class="exito__titulo">¡Gracias, <span id="exito-nombre">che</span>!</h3>
+        <p class="exito__texto">
+          Armamos el resumen de tu pedido. Tocá el botón para mandárnoslo por correo y lo
+          confirmamos en el día.
+        </p>
+        <a class="btn btn--primario" id="exito-mail" href="#">Abrir correo con el pedido</a>
+        <button class="exito__reiniciar" id="exito-reiniciar" type="button">Cargar otro pedido</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pedidos__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .pedidos__datos {
+    display: grid;
+    gap: var(--e-3);
+    margin: var(--e-5) 0 0;
+  }
+
+  .pedidos__datos div {
+    display: grid;
+    gap: 0.15rem;
+    padding-bottom: var(--e-3);
+    border-bottom: 1px solid var(--borde);
+  }
+
+  .pedidos__datos dt {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--caramelo-600);
+  }
+
+  .pedidos__datos dd {
+    margin: 0;
+    font-size: var(--t-1);
+    color: var(--tinta);
+  }
+
+  .pedidos__datos a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .pedidos__panel {
+    padding: clamp(1.5rem, 3.5vw, 2.75rem);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-g);
+    background: var(--blanco);
+    box-shadow: var(--sombra);
+  }
+
+  .formulario {
+    display: grid;
+    gap: var(--e-4);
+  }
+
+  .campo-doble {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--e-3);
+  }
+
+  .campo {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .campo label {
+    font-size: var(--t--1);
+    font-weight: 600;
+    color: var(--tinta);
+  }
+
+  .campo__opcional {
+    font-weight: 400;
+    color: var(--tinta-2);
+  }
+
+  .campo input,
+  .campo select,
+  .campo textarea {
+    width: 100%;
+    padding: 0.8rem 0.95rem;
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    background: var(--crema);
+    transition: border-color var(--transicion), box-shadow var(--transicion), background var(--transicion);
+  }
+
+  .campo textarea {
+    resize: vertical;
+    min-height: 6.5rem;
+  }
+
+  .campo input:focus,
+  .campo select:focus,
+  .campo textarea:focus {
+    outline: none;
+    border-color: var(--caramelo);
+    background: var(--blanco);
+    box-shadow: 0 0 0 3.5px color-mix(in srgb, var(--caramelo) 26%, transparent);
+  }
+
+  .campo input[aria-invalid='true'],
+  .campo select[aria-invalid='true'],
+  .campo textarea[aria-invalid='true'] {
+    border-color: #b4402f;
+    box-shadow: 0 0 0 3.5px rgba(180, 64, 47, 0.16);
+  }
+
+  .campo__error {
+    margin: 0;
+    font-size: var(--t--1);
+    font-weight: 500;
+    color: #b4402f;
+  }
+
+  .formulario__enviar {
+    justify-self: start;
+  }
+
+  .formulario__nota {
+    font-size: var(--t--1);
+    line-height: 1.5;
+    color: var(--tinta-2);
+  }
+
+  .exito {
+    display: grid;
+    justify-items: start;
+    gap: var(--e-3);
+    text-align: left;
+  }
+
+  .exito__icono {
+    display: grid;
+    place-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--oliva) 20%, transparent);
+    color: var(--oliva);
+  }
+
+  .exito__icono svg {
+    width: 1.6rem;
+    height: 1.6rem;
+  }
+
+  .exito__titulo {
+    font-size: var(--t-2);
+  }
+
+  .exito__texto {
+    max-width: 44ch;
+    color: var(--tinta-2);
+  }
+
+  .exito__reiniciar {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--caramelo-600);
+    font-size: var(--t--1);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+  }
+
+  @media (max-width: 900px) {
+    .pedidos__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .campo-doble {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script is:inline>
+  const form = document.getElementById('form-pedido');
+  const exito = document.getElementById('exito');
+
+  const reglas = [
+    { id: 'nombre', vacio: 'Contanos cómo te llamás.' },
+    { id: 'email', vacio: 'Necesitamos un email.', invalido: 'Ese email no parece válido.', validar: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+    { id: 'tipo', vacio: 'Elegí un tipo de pedido.' },
+    { id: 'mensaje', vacio: 'Contanos qué querés pedir.' },
+  ];
+
+  function mostrarError(id, mensaje) {
+    const input = document.getElementById(id);
+    const error = document.getElementById('error-' + id);
+    input.setAttribute('aria-invalid', 'true');
+    error.textContent = mensaje;
+    error.hidden = false;
+  }
+
+  function limpiarError(id) {
+    const input = document.getElementById(id);
+    const error = document.getElementById('error-' + id);
+    input.removeAttribute('aria-invalid');
+    error.hidden = true;
+  }
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    let primerInvalido = null;
+
+    for (const regla of reglas) {
+      const input = document.getElementById(regla.id);
+      const valor = input.value.trim();
+      limpiarError(regla.id);
+
+      if (!valor) {
+        mostrarError(regla.id, regla.vacio);
+        primerInvalido = primerInvalido || input;
+      } else if (regla.validar && !regla.validar(valor)) {
+        mostrarError(regla.id, regla.invalido);
+        primerInvalido = primerInvalido || input;
+      }
+    }
+
+    if (primerInvalido) {
+      primerInvalido.focus();
+      return;
+    }
+
+    const nombre = document.getElementById('nombre').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const telefono = document.getElementById('telefono').value.trim();
+    const tipo = document.getElementById('tipo').value;
+    const detalle = document.getElementById('detalle').value.trim();
+    const mensaje = document.getElementById('mensaje').value.trim();
+
+    const cuerpo = [
+      'Nombre: ' + nombre,
+      'Email: ' + email,
+      telefono ? 'Teléfono: ' + telefono : null,
+      'Tipo de pedido: ' + tipo,
+      detalle ? 'Detalle: ' + detalle : null,
+      '',
+      mensaje,
+    ]
+      .filter(Boolean)
+      .join('\n');
+
+    const mailto =
+      'mailto:hola@altura.cafe?subject=' +
+      encodeURIComponent('Pedido · ' + tipo) +
+      '&body=' +
+      encodeURIComponent(cuerpo);
+
+    document.getElementById('exito-nombre').textContent = nombre.split(' ')[0];
+    document.getElementById('exito-mail').setAttribute('href', mailto);
+
+    form.hidden = true;
+    exito.hidden = false;
+    exito.querySelector('#exito-mail').focus();
+  });
+
+  reglas.forEach((regla) => {
+    const input = document.getElementById(regla.id);
+    input.addEventListener('input', () => limpiarError(regla.id));
+  });
+
+  document.getElementById('exito-reiniciar').addEventListener('click', () => {
+    form.reset();
+    reglas.forEach((regla) => limpiarError(regla.id));
+    exito.hidden = true;
+    form.hidden = false;
+    document.getElementById('nombre').focus();
+  });
+</script>

@@ -17,7 +17,7 @@ Test runner: none configured — verification is `bun run build` + output inspec
 - **S5** — Real Pexels images, downloaded into the repo (self-contained, no hotlinking).
 - **S6** — Responsive and accessible: labelled inputs, real `alt` text, visible focus,
   `prefers-reduced-motion` respected.
-- **S7** — Deploy to Vercel when done. (Blocked: no `vercel` CLI and no Vercel auth.)
+- **S7** — Deploy to Vercel when done.
 - **S8** — Run ODD automatically, persist to engram, deliver as `single-pr`.
 
 ## Tasks
@@ -30,7 +30,7 @@ Test runner: none configured — verification is `bun run build` + output inspec
 - [x] T6 — Footer, scroll-reveal, responsive + a11y pass. (inline)
 - [x] T7 — `bun run build` + verify output. (inline)
 - [x] T8 — Work-unit commits on feature branch. (inline)
-- [ ] T9 — Vercel deploy. (blocked — needs CLI + login)
+- [x] T9 — Vercel deploy. (inline)
 
 ## Log
 
@@ -50,3 +50,15 @@ Test runner: none configured — verification is `bun run build` + output inspec
 - **L6**: Verification — `bun run build` green: 1 page, 28 optimized WebP variants. Output
   inspected: all section ids present, 9 `<img>` with `srcset` + real `alt`, no external Pexels
   URLs, no references to the removed starter files. `lang="es"`, `charset="utf-8"`.
+- **L7** (deploy): Unblocked — Vercel CLI 64.5.0 installed globally via `bun add -g vercel`; user
+  ran `vercel login` (session `chavariae249-4007`). `vercel deploy --prod --yes` created project
+  `por-wore/extra-ellipse` and built on Vercel (Astro detected, `bun.lock` → Bun, `bun run build`).
+  Result `readyState: READY`.
+  - Production alias: https://extra-ellipse.vercel.app
+  - Deployment URL: https://extra-ellipse-b79pet2zx-por-wore.vercel.app
+  - Inspector: https://vercel.com/por-wore/extra-ellipse/DZLPPgpMYDaXZ5gRfczN7bxAdfsq
+  - Verified unauthenticated: `/`, `/_astro/index.CdYMa1_A.css`, `/_astro/hero.*.webp` and
+    `/favicon.svg` all return 200 with correct content types. HTML contains the Spanish copy,
+    `lang="es"`, real `alt` text and responsive `srcset`.
+  - Non-blocking warning from Vercel: `engines.node: ">=22.22.0"` auto-upgrades on future Node
+    majors. Build succeeded as-is.

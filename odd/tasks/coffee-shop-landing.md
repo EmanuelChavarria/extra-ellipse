@@ -62,3 +62,16 @@ Test runner: none configured — verification is `bun run build` + output inspec
     `lang="es"`, real `alt` text and responsive `srcset`.
   - Non-blocking warning from Vercel: `engines.node: ">=22.22.0"` auto-upgrades on future Node
     majors. Build succeeded as-is.
+- **L8** (commits): `1a7d39c` design system/layout/imagery, `41e4a2f` nav/hero/catalog,
+  `d112827` origin/form/assembly, `e611887` ODD doc, `5318d87` Vercel link + deploy record.
+  `AGENTS.md` remains modified/uncommitted from an unrelated previous task and was deliberately
+  kept out of every landing commit. The repo had no git remote at this point.
+- **L9** (delivery, `single-pr`): GitHub CLI 2.102.0 installed via winget; user ran `gh auth login`
+  as `EmanuelChavarria`. Repo created public as `EmanuelChavarria/extra-ellipse` (default branch
+  `master`), both branches pushed, PR opened.
+  - PR: https://github.com/EmanuelChavarria/extra-ellipse/pull/1
+  - Range `master...feat/coffee-shop-landing`: 5 commits, 23 files, +1860 / −246, `MERGEABLE`.
+  - `git push` reused the existing Git Credential Manager entry for github.com; no git config was
+    modified. The 1860-line count is dominated by 10 binary Pexels JPEGs (~1.5 MB) and by removals
+    of the stock starter; authored code, styles and docs are well below the 400-line heuristic.
+  - Merge of PR #1 remains the user's decision.

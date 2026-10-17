@@ -1,0 +1,244 @@
+---
+import { Image } from 'astro:assets';
+import cosecha from '../assets/origen-cosecha.jpg';
+import finca from '../assets/origen-finca.jpg';
+
+const origenes = [
+  {
+    finca: 'Finca La Esperanza',
+    region: 'Huila, Colombia',
+    altitud: '1.850 msnm',
+    variedad: 'Castillo',
+    proceso: 'Lavado',
+  },
+  {
+    finca: 'Finca El Mirador',
+    region: 'Antigua, Guatemala',
+    altitud: '1.600 msnm',
+    variedad: 'Bourbon',
+    proceso: 'Natural',
+  },
+  {
+    finca: 'Cooperativa Cerro Verde',
+    region: 'Oaxaca, México',
+    altitud: '1.450 msnm',
+    variedad: 'Typica',
+    proceso: 'Honey',
+  },
+];
+---
+
+<section class="origen seccion seccion--oscura" id="origen">
+  <div class="contenedor origen__grid">
+    <div class="origen__media" data-reveal>
+      <div class="origen__foto origen__foto--principal">
+        <Image
+          src={cosecha}
+          alt="Manos cosechando cerezas de café maduras de la planta"
+          widths={[560, 840, 1200]}
+          sizes="(max-width: 960px) 92vw, 44vw"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <div class="origen__foto origen__foto--secundaria">
+        <Image
+          src={finca}
+          alt="Caficultor recogiendo frutos de café en una plantación al sol"
+          widths={[320, 520, 720]}
+          sizes="(max-width: 960px) 45vw, 220px"
+          loading="lazy"
+          decoding="async"
+        />
+      </div>
+      <p class="origen__sello">Cosecha 2026</p>
+    </div>
+
+    <div class="origen__texto">
+      <div class="cabecera" data-reveal>
+        <p class="eyebrow">Origen</p>
+        <h2 class="titulo-seccion">Cada bolsa tiene una finca detrás</h2>
+        <p class="entrada">
+          Trabajamos en directo con productores de altura, pagamos por encima del precio de
+          mercado y tostamos solo lo que vamos a vender. Si no conocemos la finca, no entra
+          en la barra.
+        </p>
+      </div>
+
+      <ul class="origen__lista">
+        {
+          origenes.map((o, i) => (
+            <li class="origen__item" data-reveal style={`--reveal-delay: ${i * 90}ms`}>
+              <div class="origen__encabezado">
+                <h3>{o.finca}</h3>
+                <span class="origen__proceso">{o.proceso}</span>
+              </div>
+              <p class="origen__region">{o.region}</p>
+              <dl class="origen__datos">
+                <div>
+                  <dt>Altitud</dt>
+                  <dd>{o.altitud}</dd>
+                </div>
+                <div>
+                  <dt>Variedad</dt>
+                  <dd>{o.variedad}</dd>
+                </div>
+                <div>
+                  <dt>Proceso</dt>
+                  <dd>{o.proceso}</dd>
+                </div>
+              </dl>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .origen__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+
+  .origen__media {
+    position: relative;
+  }
+
+  .origen__foto {
+    border-radius: var(--radio-g);
+    overflow: hidden;
+    background: var(--espresso-soft);
+  }
+
+  .origen__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .origen__foto--principal {
+    aspect-ratio: 5 / 6;
+  }
+
+  .origen__foto--secundaria {
+    position: absolute;
+    right: -1rem;
+    bottom: -1.5rem;
+    width: min(46%, 15rem);
+    aspect-ratio: 4 / 5;
+    border: 6px solid var(--espresso);
+    box-shadow: var(--sombra-alta);
+  }
+
+  .origen__sello {
+    position: absolute;
+    top: 1.25rem;
+    left: -0.5rem;
+    padding: 0.45rem 0.95rem;
+    border-radius: 999px;
+    background: var(--caramelo);
+    color: #22160f;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    box-shadow: var(--sombra);
+  }
+
+  .origen__lista {
+    display: grid;
+    gap: var(--e-3);
+  }
+
+  .origen__item {
+    padding: var(--e-4);
+    border: 1px solid var(--borde-claro);
+    border-radius: var(--radio);
+    background: color-mix(in srgb, var(--blanco) 5%, transparent);
+    transition: border-color var(--transicion), background var(--transicion);
+  }
+
+  .origen__item:hover {
+    border-color: color-mix(in srgb, var(--caramelo) 55%, transparent);
+    background: color-mix(in srgb, var(--blanco) 9%, transparent);
+  }
+
+  .origen__encabezado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--e-3);
+  }
+
+  .origen__item h3 {
+    font-size: var(--t-1);
+    font-weight: 600;
+    color: var(--blanco);
+  }
+
+  .origen__proceso {
+    padding: 0.22rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid var(--borde-claro);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--caramelo);
+  }
+
+  .origen__region {
+    margin-top: 0.2rem;
+    font-size: var(--t--1);
+    letter-spacing: 0.03em;
+    color: rgba(246, 239, 228, 0.66);
+  }
+
+  .origen__datos {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--e-3);
+    margin: var(--e-3) 0 0;
+    padding-top: var(--e-3);
+    border-top: 1px solid var(--borde-claro);
+  }
+
+  .origen__datos dt {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(246, 239, 228, 0.5);
+  }
+
+  .origen__datos dd {
+    margin: 0.15rem 0 0;
+    font-size: var(--t-0);
+    color: var(--crema);
+  }
+
+  @media (max-width: 960px) {
+    .origen__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .origen__media {
+      margin-bottom: 2rem;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .origen__foto--secundaria {
+      right: 0.5rem;
+      bottom: -1rem;
+      width: 42%;
+    }
+
+    .origen__datos {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>
